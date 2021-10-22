@@ -29,7 +29,8 @@ public class AuthController {
         String clientSecret = "LhGvMmhmdOg7vOEEiz6uJsnvDATt-VXtfg3epghy";
         String clientId = "0oa26nuqtet6pJypD5d7";
         String domainUrl = "dev-22214085.okta.com";
-        String frontendRedirectionUrl = "https://okta-login-demo.netlify.app/login/callback";
+//        String frontendRedirectionUrl = "https://okta-login-demo.netlify.app/login/callback";
+        String frontendRedirectionUrl = "http://localhost:3000/";
         String oktaAuthEndpoint = String.format("https://%s/oauth2/default/v1/token", domainUrl);
         String backendRedirectUrl = "http://localhost:8080/login/callback/";
         //  Move to a config file --- end
