@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,23 +20,30 @@ import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
 @RestController
 public class AuthController {
+
+    @Value("${okta.clientSecret}")
+    private String clientSecret;
+
+    @Value("${okta.clientId}")
+    String clientId;
+
+    @Value("${okta.domainUrl}")
+    String domainUrl;
+
+    @Value("${okta.frontendRedirectionUrl}")
+    String frontendRedirectionUrl;
+
+    @Value("${okta.oktaAuthEndpoint}")
+    String oktaAuthEndpoint;
+
+    @Value("${okta.backendRedirectUrl}")
+    String backendRedirectUrl;
+
     @RequestMapping(value = "login/callback/", method = RequestMethod.GET)
     public String OktaLoginCallback(@RequestParam String code, HttpServletResponse response) throws IOException, InterruptedException, JSONException {
         if (code == null) {
             return "The Okta Code is None";
         }
-
-        //  Move to a config file --- start
-        String clientSecret = "LhGvMmhmdOg7vOEEiz6uJsnvDATt-VXtfg3epghy";
-        String clientId = "0oa26nuqtet6pJypD5d7";
-        String domainUrl = "dev-22214085.okta.com";
-//        String frontendRedirectionUrl = "https://okta-login-demo.netlify.app/login/callback";
-        String frontendRedirectionUrl = "http://localhost:3000/";
-        String oktaAuthEndpoint = String.format("https://%s/oauth2/default/v1/token", domainUrl);
-        String backendRedirectUrl = "http://localhost:8080/login/callback/";
-        //  Move to a config file --- end
-
-
         String authCredentials = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes("UTF-8"));
         String urlEncodedBody = String.format("grant_type=authorization_code&code=%s&redirect_uri=%s", code, backendRedirectUrl);
 
